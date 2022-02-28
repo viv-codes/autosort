@@ -1,4 +1,4 @@
-# autosort
+# filesort
 
 ![Build](https://img.shields.io/github/workflow/status/viv-codes/autosort/Lint?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Made%20with-Python-yellow?style=for-the-badge)
