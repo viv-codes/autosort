@@ -11,8 +11,9 @@ import shutil
 import time
 import click
 
+
 @click.command()
-def main():
+def cli():
     # TODO later on make it so that I could also just call directly from the command line
 
     instr = input()

@@ -1,3 +1,3 @@
 [console_scripts]
-filesort = filesort:cli
+filesort = filesort.main:cli
 
