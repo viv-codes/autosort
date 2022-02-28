@@ -2,7 +2,6 @@
 
 ![Build](https://img.shields.io/github/workflow/status/viv-codes/autosort/Lint?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Made%20with-Python-yellow?style=for-the-badge)
-![pythonversion](https://img.shields.io/pypi/pyversions/filesort?style=for-the-badge)
 ![Black](https://img.shields.io/badge/Code%20Style-Black-black?style=for-the-badge)
 ![License](https://img.shields.io/pypi/l/filesort?style=for-the-badge)
 ![pypi](https://img.shields.io/pypi/v/filesort?style=for-the-badge)
