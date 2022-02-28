@@ -7,7 +7,7 @@
 ![pypi](https://img.shields.io/pypi/v/filesort?style=for-the-badge)
 
 ## About filesort
-A utility that automatically organizes files based on metadata within the linux filesystem. Currently can sort by day, month, or year. Future functionality will include options to sort by file extension or only sort files that have a certain extension
+A utility that automatically organizes files based on metadata within the linux filesystem. Currently can sort by day, month, year, and file extension. 
 
 ## Installation & Use
 
