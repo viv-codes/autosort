@@ -21,7 +21,7 @@ def main():
     nameout = outname()
     if nameout == "":
         nameout = None
-    outpath = os.path.join(outstr , nameout)
+    outpath = os.path.join(outstr, nameout)
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
     # progressbar(instr)
