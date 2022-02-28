@@ -23,7 +23,7 @@ def main():
     outpath = outstr + nameout
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
-    progressbar(instr)
+    # progressbar(instr)
     # ! Add an option for copy vs move and to only copy files with a certain file extension
     sort(instr, outpath, method)
     genericmessage("Sort complete!")
@@ -132,8 +132,8 @@ def genericmessage(astring):
     message_dialog(title="autosort CLI", text=astring + "\nPress ENTER to quit.").run()
 
 
-def progressbar(instr):
-    """Displays the progress of the copy"""
+# def progressbar(instr):
+#     """Displays the progress of the copy"""
     # TODO make this like actually work
     # for root, dirs, files in os.walk(instr, topdown=False)
 
