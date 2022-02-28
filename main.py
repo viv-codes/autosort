@@ -64,13 +64,12 @@ def copy(filepath, outpath, method):
     """Main copy method"""
     if method == "Day" or method == "Month" or method == "Year":
         ctime = time.ctime(os.path.getctime(filepath)).split()
-        # TODO This first block could probably be simplified using os.path.join() but idk
         if method == "Day":
-            dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/" + ctime[2] + "/"
+            dest = os.path.join(outpath,ctime[-1],ctime[1],ctime[2])
         elif method == "Month":
-            dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/"
+            dest = os.path.join(outpath,ctime[-1],ctime[1])
         elif method == "Year":
-            dest = outpath + "/" + ctime[-1] + "/"
+            dest = os.path.join(outpath, ctime[-1])
     elif method == "File extension":
         dest = outpath + "/" + os.path.splitext(filepath)[1].replace(".", "")
     try:
