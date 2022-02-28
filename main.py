@@ -8,6 +8,7 @@ from prompt_toolkit.shortcuts import (
 )
 import os
 import shutil
+import time
 
 
 def main():
@@ -134,8 +135,8 @@ def genericmessage(astring):
 
 # def progressbar(instr):
 #     """Displays the progress of the copy"""
-    # TODO make this like actually work
-    # for root, dirs, files in os.walk(instr, topdown=False)
+# TODO make this like actually work
+# for root, dirs, files in os.walk(instr, topdown=False)
 
 
 if __name__ == "__main__":
