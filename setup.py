@@ -1,11 +1,11 @@
-import setuptools
+from setuptools import setup, find_packages
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name="filesort",
-    version="0.0.1",
+    version="0.0.2",
     author="Vivian Hafener",
     author_email="vhafener@outlook.com",
     description="A package that aids sorting of files",
@@ -21,7 +21,15 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     package_dir={"": "src"},
-    # packages=setuptools.find_packages(where="src"),
-    packages=find_packages(include=['prompt-toolkit'])
+    packages=find_packages(),
+    install_requires=['Click',],
+        entry_points={
+        'console_scripts': [
+            'filesort = filesort:cli',
+        ],
+        },
+
+    #packages=find_packages(include=['prompt-toolkit', 'Click'])
+    #install_requires=['prompt-toolkit', 'Click']
     python_requires=">=3.6",
 )

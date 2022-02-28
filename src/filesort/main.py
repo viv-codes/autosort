@@ -9,8 +9,9 @@ from prompt_toolkit.shortcuts import (
 import os
 import shutil
 import time
+import click
 
-
+@click.command()
 def main():
     # TODO later on make it so that I could also just call directly from the command line
 
