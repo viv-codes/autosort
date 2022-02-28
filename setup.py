@@ -5,13 +5,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="filesort",
-    version="0.0.5",
+    version="0.0.11",
     author="Vivian Hafener",
     author_email="vhafener@outlook.com",
     description="A package that aids sorting of files",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/viv-codes/filesort",
+    include_package_data=True,
     project_urls={
         "Bug Tracker": "https://github.com/viv-codes/filesort/issues",
     },
@@ -20,12 +21,13 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+
     package_dir={"": "src"},
-    packages=find_packages(),
+    packages=find_packages(where="src")
     install_requires=['Click',],
         entry_points={
         'console_scripts': [
-            'filesort= filesort.main:cli',
+            'filesort=src.filesort.main:cli',
         ],
         },
 

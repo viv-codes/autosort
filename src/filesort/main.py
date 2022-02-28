@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from unicodedata import name
 from prompt_toolkit.shortcuts import (
     input_dialog,
