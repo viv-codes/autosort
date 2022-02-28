@@ -16,7 +16,7 @@ Example input directory prior to sorting:
 ```
 Example output directory after sort by day:
 ```
-testautosort/
+testfilesort/
 └── 2022
     └── Feb
         ├── 18
