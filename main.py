@@ -4,13 +4,14 @@ from prompt_toolkit.shortcuts import (
     message_dialog,
     button_dialog,
     radiolist_dialog,
+    ProgressBar,
 )
 import os
 import shutil
 
 
 def main():
-    # Logic Flow - later on make it so that I could also just call directly from the command line
+    # TODO later on make it so that I could also just call directly from the command line
 
     instr = input()
     verify(instr)
@@ -22,8 +23,10 @@ def main():
     outpath = outstr + nameout
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
+    progressbar(instr)
     # ! Add an option for copy vs move and to only copy files with a certain file extension
     sort(instr, outpath, method)
+    genericmessage("Sort complete!")
 
 
 def sort(instr, outpath, method):
@@ -127,6 +130,12 @@ def verify(checkstr):
 def genericmessage(astring):
     """Generates a generic message based on astring"""
     message_dialog(title="autosort CLI", text=astring + "\nPress ENTER to quit.").run()
+
+
+def progressbar(instr):
+    """Displays the progress of the copy"""
+    # TODO make this like actually work
+    # for root, dirs, files in os.walk(instr, topdown=False)
 
 
 if __name__ == "__main__":
