@@ -116,7 +116,7 @@ def outname():
 def choosemethod():
     """Prompts the user for the sort method to be used"""
     result = radiolist_dialog(
-        title=TITLE",
+        title=TITLE,
         text="Sort method:\n[Press space to select]",
         values=[
             ("Day", "/YYYY/MM/DD/"),
