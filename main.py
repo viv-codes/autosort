@@ -14,6 +14,8 @@ import time
 import click
 from yaspin import yaspin
 
+TITLE = "filesort CLI v0.1.1"
+
 
 @click.command()
 def cli():
@@ -85,7 +87,7 @@ def copy(filepath, outpath, method):
 
 def input():
     """Queries the user for t/home/vivi/Documents/testing/outdirhe input directory"""
-    instr = input_dialog(title="filesort CLI", text="Path of input:").run()
+    instr = input_dialog(title=TITLE, text="Path of input:").run()
     if instr == "":
         input()
     else:
@@ -94,7 +96,7 @@ def input():
 
 def output():
     """Queries the user for the output parent directory"""
-    outstr = input_dialog(title="filesort CLI", text="Path of output:").run()
+    outstr = input_dialog(title=TITLE, text="Path of output:").run()
     if outstr == "":
         output()
     else:
@@ -103,7 +105,7 @@ def output():
 
 def outname():
     """Queries the user for the output folder name"""
-    name = input_dialog(title="filesort CLI", text="Name of output folder:").run()
+    name = input_dialog(title=TITLE, text="Name of output folder:").run()
     if name == "":
         outname()
     else:
@@ -113,7 +115,7 @@ def outname():
 def choosemethod():
     """Prompts the user for the sort method to be used"""
     result = radiolist_dialog(
-        title="filesort CLI",
+        title=TITLE,
         text="Sort method:\n[Press space to select]",
         values=[
             ("Day", "/YYYY/MM/DD/"),
@@ -128,7 +130,7 @@ def choosemethod():
 def confirm(instr, outstr, nameout, method):
     """Queries the user to confirm the validity of their data"""
     out = button_dialog(
-        title="filesort CLI",
+        title=TITLE,
         text="Confirm:\nInput folder: "
         + instr
         + "\nOutput folder: "
@@ -153,7 +155,7 @@ def verify(checkstr):
 
 def genericmessage(astring):
     """Generates a generic message based on astring"""
-    message_dialog(title="filesort CLI", text=astring + "\nPress ENTER to quit.").run()
+    message_dialog(title=TITLE, text=astring + "\nPress ENTER to quit.").run()
 
 
 # def progressbar(instr):
