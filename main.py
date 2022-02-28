@@ -22,37 +22,37 @@ def main():
     outpath = outstr + nameout
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
-    # ! Add an option for copy vs move
+    # ! Add an option for copy vs move and to only copy files with a certain file extension
     sort(instr, outpath, method)
 
 
 def sort(instr, outpath, method):
     """Sorts the input directory into the output directory via the defined sort method"""
     os.mkdir(outpath)
-    if method == "Day":
-        for filename in os.listdir(instr):
-            traversedir()
-
-    # if method == "Month":
-
-    # if method == "Year":
+    traversedir(instr, outpath, method)
 
 
-def traversedir(path, outpath):
+def traversedir(path, outpath, method):
+    """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
     if os.path.isdir(path):
-        for f in os.listdir(path):
+        for filename in os.listdir(path):
+            f = os.path.join(path, filename)
             if os.path.isdir(f):
                 traversedir(f)
             elif os.path.isfile(f):
-                #! Now actually do the copying based on the specified method
-                return None
+                copy(f, outpath, method)
 
 
-def meta2path(filename, filepath, outpath):
+def copy(filepath, outpath, method):
     """Handles days only"""
     time = time.ctime(os.path.getctime(filepath)).split()
-    #! is outpath created yet?
-    dest = outpath + "/" + time[-1] + "/" + time[1] + "/" + time[2]
+    if method == "Day":
+        dest = outpath + "/" + time[-1] + "/" + time[1] + "/" + time[2] + "/"
+    elif method == "Month":
+        dest = outpath + "/" + time[-1] + "/" + time[1] + "/"
+    elif method == "Year":
+        dest = outpath + "/" + time[-1] + "/"
+    # TODO Add some more sort methods here
     if os.path.isdir():
         #! Need to handle filenotfound exception
         shutil.copy2(filepath, dest)
