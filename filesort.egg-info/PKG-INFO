@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: filesort
-Version: 0.0.14
+Version: 0.1.0
 Summary: A package that aids sorting of files
 Home-page: https://github.com/viv-codes/filesort
 Author: Vivian Hafener
@@ -20,8 +20,23 @@ License-File: LICENSE
 ![Build](https://img.shields.io/github/workflow/status/viv-codes/autosort/Lint?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Made%20with-Python-yellow?style=for-the-badge)
 ![Black](https://img.shields.io/badge/Code%20Style-Black-black?style=for-the-badge)
+![License](https://img.shields.io/pypi/l/filesort?style=for-the-badge)
+![pypi](https://img.shields.io/pypi/v/filesort?style=for-the-badge)
 
+## About filesort
 A utility that automatically organizes files based on metadata within the linux filesystem. Currently can sort by day, month, or year. Future functionality will include options to sort by file extension or only sort files that have a certain extension
+
+## Installation & Use
+
+Install filesort:
+```
+pip install filesort
+```
+
+Run filesort:
+```
+filesort
+```
 
 Example input directory prior to sorting:
 ```
@@ -45,5 +60,10 @@ testfilesort/
             └── Screenshot from 2022-02-23 10-01-19.png
 
 ```
+
+An example of the UI:
+
+![Screenshot of input field](readme_assets/page0.png)
+![Screenshot of confirmation page](readme_assets/endstep.png)
 
 

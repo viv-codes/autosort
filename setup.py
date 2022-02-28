@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="filesort",
-    version="0.0.14",
+    version="0.1.0",
     author="Vivian Hafener",
     author_email="vhafener@outlook.com",
     description="A package that aids sorting of files",

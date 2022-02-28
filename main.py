@@ -12,6 +12,7 @@ import os
 import shutil
 import time
 import click
+from yaspin import yaspin
 
 
 @click.command()
@@ -42,12 +43,13 @@ def sort(instr, outpath, method):
 def traversedir(path, outpath, method):
     """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
     if os.path.isdir(path):
-        for filename in os.listdir(path):
-            f = os.path.join(path, filename)
-            if os.path.isdir(f):
-                traversedir(f, outpath, method)
-            elif os.path.isfile(f):
-                copy(f, outpath, method)
+        with yaspin(text="Moving files..."):
+            for filename in os.listdir(path):
+                f = os.path.join(path, filename)
+                if os.path.isdir(f):
+                    traversedir(f, outpath, method)
+                elif os.path.isfile(f):
+                    copy(f, outpath, method)
 
 
 def copy(filepath, outpath, method):
@@ -110,7 +112,7 @@ def choosemethod():
             ("Day", "/YYYY/MM/DD/"),
             ("Month", "/YYYY/MM/"),
             ("Year", "/YYYY/"),
-            ("File extension", "/xxx/"),
+            ("File extension", "/xxx/ (File extension)"),
         ],
     ).run()
     return result
