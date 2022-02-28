@@ -23,7 +23,7 @@ setup(
     ],
     # package_dir={"": "src"},
     py_modules=["main"],
-    packages=find_packages(where="main"),
+    packages=find_packages(where="main.py"),
     install_requires=[
         "Click",
     ],
