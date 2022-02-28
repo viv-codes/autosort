@@ -23,15 +23,23 @@ def cli():
     outstr = output()
     verify(outstr)
     nameout = outname()
-    if nameout == "":
+    if nameout == None:
+        exit()
+    elif nameout == "":
         nameout = None
     outpath = os.path.join(outstr, nameout)
     method = choosemethod()
-    confirm(instr, outstr, nameout, method)
-    # progressbar(instr)
-    # ! Add an option for copy vs move and to only copy files with a certain file extension
-    sort(instr, outpath, method)
-    genericmessage("Sort complete!")
+    if method == None:
+        exit()
+    out = confirm(instr, outstr, nameout, method)
+    if out == None:
+        exit()
+    elif out == False:
+        cli()
+    else:
+        # ! Add an option for copy vs move and to only copy files with a certain file extension
+        sort(instr, outpath, method)
+        genericmessage("Sort complete!")
 
 
 def sort(instr, outpath, method):
@@ -122,15 +130,15 @@ def confirm(instr, outstr, nameout, method):
     """Queries the user to confirm the validity of their data"""
     out = button_dialog(
         title="filesort CLI",
-        text="Confirm:\nInput folder:"
+        text="Confirm:\nInput folder: "
         + instr
-        + "\nOutput folder:"
+        + "\nOutput folder: "
         + outstr
-        + "\nName of output folder:"
+        + "\nName of output folder: "
         + instr
         + "/"
         + nameout
-        + "\nMethod:"
+        + "\nMethod: "
         + method
         + "\nIs this information correct?",
         buttons=[("Yes", True), ("No", False), ("Cancel", None)],
