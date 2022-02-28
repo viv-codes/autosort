@@ -1,5 +1,6 @@
 LICENSE
 README.md
+main.py
 pyproject.toml
 setup.py
 filesort.egg-info/PKG-INFO
