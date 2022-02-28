@@ -1,3 +1,4 @@
+from unicodedata import name
 from prompt_toolkit.shortcuts import (
     input_dialog,
     message_dialog,
@@ -5,6 +6,7 @@ from prompt_toolkit.shortcuts import (
     radiolist_dialog,
 )
 import os
+import shutil
 
 
 def main():
@@ -17,24 +19,46 @@ def main():
     nameout = outname()
     if nameout == "":
         nameout = None
+    outpath = outstr + nameout
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
-    sort(instr, outstr + nameout, method)
-
-
-def choosemethod():
-    """Prompts the user for the sort method to be used"""
-    result = radiolist_dialog(
-        title="autosort CLI",
-        text="Sort method:\n[Press space to select]",
-        values=[("Day", "/YYYY/MM/DD/"), ("Month", "/YYYY/MM/"), ("Year", "/YYYY/")],
-    ).run()
-    return result
+    # ! Add an option for copy vs move
+    sort(instr, outpath, method)
 
 
 def sort(instr, outpath, method):
     """Sorts the input directory into the output directory via the defined sort method"""
     os.mkdir(outpath)
+    if method == "Day":
+        for filename in os.listdir(instr):
+            traversedir()
+
+    # if method == "Month":
+
+    # if method == "Year":
+
+
+def traversedir(path, outpath):
+    if os.path.isdir(path):
+        for f in os.listdir(path):
+            if os.path.isdir(f):
+                traversedir(f)
+            elif os.path.isfile(f):
+                #! Now actually do the copying based on the specified method
+                return None
+
+
+def meta2path(filename, filepath, outpath):
+    """Handles days only"""
+    time = time.ctime(os.path.getctime(filepath)).split()
+    #! is outpath created yet?
+    dest = outpath + "/" + time[-1] + "/" + time[1] + "/" + time[2]
+    if os.path.isdir():
+        #! Need to handle filenotfound exception
+        shutil.copy2(filepath, dest)
+    else:
+        os.mkdir(dest)
+        shutil.copy2(filepath, dest)
 
 
 def input():
@@ -62,6 +86,16 @@ def outname():
         outname()
     else:
         return name
+
+
+def choosemethod():
+    """Prompts the user for the sort method to be used"""
+    result = radiolist_dialog(
+        title="autosort CLI",
+        text="Sort method:\n[Press space to select]",
+        values=[("Day", "/YYYY/MM/DD/"), ("Month", "/YYYY/MM/"), ("Year", "/YYYY/")],
+    ).run()
+    return result
 
 
 def confirm(instr, outstr, nameout, method):
