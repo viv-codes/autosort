@@ -49,13 +49,13 @@ def traversedir(path, outpath, method):
 
 def copy(filepath, outpath, method):
     """Handles days only"""
-    time = time.ctime(os.path.getctime(filepath)).split()
+    ctime = time.ctime(os.path.getctime(filepath)).split()
     if method == "Day":
-        dest = outpath + "/" + time[-1] + "/" + time[1] + "/" + time[2] + "/"
+        dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/" + ctime[2] + "/"
     elif method == "Month":
-        dest = outpath + "/" + time[-1] + "/" + time[1] + "/"
+        dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/"
     elif method == "Year":
-        dest = outpath + "/" + time[-1] + "/"
+        dest = outpath + "/" + ctime[-1] + "/"
     # TODO Add some more sort methods here
     if os.path.isdir():
         #! Need to handle filenotfound exception
