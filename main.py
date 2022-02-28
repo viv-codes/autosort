@@ -1,4 +1,9 @@
-from prompt_toolkit.shortcuts import input_dialog, message_dialog, button_dialog
+from prompt_toolkit.shortcuts import (
+    input_dialog,
+    message_dialog,
+    button_dialog,
+    radiolist_dialog,
+)
 
 
 def main():
@@ -7,11 +12,6 @@ def main():
     #   string path out output root folder
     #   name path of output root folder
 
-    # Metadata to sort by
-    #   Date (Day)      /YYYY/MM/DD
-    #   Date (Month)    /YYYY/MM
-    #   Date(Year)      /YYYY
-
     # Logic Flow - later on make it so that I could also just call directly from the command line
 
     instr = input()
@@ -19,8 +19,23 @@ def main():
     outstr = output()
     verify(outstr)
     nameout = outname()
-    verify(nameout)
-    confirm(instr, outstr, nameout)
+    if nameout == "":
+        nameout = None
+    method = choosemethod()
+    confirm(instr, outstr, nameout, method)
+    # sort(instr, outstr+nameout)
+
+
+def choosemethod():
+    result = radiolist_dialog(
+        title="autosort CLI",
+        text="Sort method:\n[Press space to select]",
+        values=[("Day", "/YYYY/MM/DD/"), ("Month", "/YYYY/MM/"), ("Year", "/YYYY/")],
+    ).run()
+    return result
+
+
+# def sort(instr, outpath)
 
 
 def input():
@@ -47,7 +62,7 @@ def outname():
         return name
 
 
-def confirm(instr, outstr, nameout):
+def confirm(instr, outstr, nameout, method):
     out = button_dialog(
         title="autosort CLI",
         text="Confirm:\nInput folder:"
@@ -58,6 +73,8 @@ def confirm(instr, outstr, nameout):
         + instr
         + "/"
         + nameout
+        + "\nMethod:"
+        + method
         + "\nIs this information correct?",
         buttons=[("Yes", True), ("No", False), ("Cancel", None)],
     ).run()
