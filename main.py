@@ -4,14 +4,10 @@ from prompt_toolkit.shortcuts import (
     button_dialog,
     radiolist_dialog,
 )
+import os
 
 
 def main():
-    # Elements
-    #   string path of input
-    #   string path out output root folder
-    #   name path of output root folder
-
     # Logic Flow - later on make it so that I could also just call directly from the command line
 
     instr = input()
@@ -23,10 +19,11 @@ def main():
         nameout = None
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
-    # sort(instr, outstr+nameout)
+    sort(instr, outstr + nameout, method)
 
 
 def choosemethod():
+    """Prompts the user for the sort method to be used"""
     result = radiolist_dialog(
         title="autosort CLI",
         text="Sort method:\n[Press space to select]",
@@ -35,10 +32,13 @@ def choosemethod():
     return result
 
 
-# def sort(instr, outpath)
+def sort(instr, outpath, method):
+    """Sorts the input directory into the output directory via the defined sort method"""
+    os.mkdir(outpath)
 
 
 def input():
+    """Queries the user for the input directory"""
     instr = input_dialog(title="autosort CLI", text="Path of input:").run()
     if instr == "":
         input()
@@ -47,6 +47,7 @@ def input():
 
 
 def output():
+    """Queries the user for the output parent directory"""
     outstr = input_dialog(title="autosort CLI", text="Path of output:").run()
     if outstr == "":
         output()
@@ -55,6 +56,7 @@ def output():
 
 
 def outname():
+    """Queries the user for the output folder name"""
     name = input_dialog(title="autosort CLI", text="Name of output folder:").run()
     if name == "":
         outname()
@@ -63,6 +65,7 @@ def outname():
 
 
 def confirm(instr, outstr, nameout, method):
+    """Queries the user to confirm the validity of their data"""
     out = button_dialog(
         title="autosort CLI",
         text="Confirm:\nInput folder:"
@@ -82,11 +85,13 @@ def confirm(instr, outstr, nameout, method):
 
 
 def verify(checkstr):
+    """Exits the program if the string is none"""
     if checkstr == None:
         exit()
 
 
 def genericmessage(astring):
+    """Generates a generic message based on astring"""
     message_dialog(title="autosort CLI", text=astring + "\nPress ENTER to quit.").run()
 
 
