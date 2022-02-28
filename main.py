@@ -16,8 +16,7 @@ import click
 
 @click.command()
 def cli():
-    # TODO later on make it so that I could also just call directly from the command line
-
+    """Primary entry point for GUI operations"""
     instr = input()
     verify(instr)
     outstr = output()
@@ -52,15 +51,19 @@ def traversedir(path, outpath, method):
 
 
 def copy(filepath, outpath, method):
-    """Handles days only"""
-    ctime = time.ctime(os.path.getctime(filepath)).split()
-    if method == "Day":
-        dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/" + ctime[2] + "/"
-    elif method == "Month":
-        dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/"
-    elif method == "Year":
-        dest = outpath + "/" + ctime[-1] + "/"
-    # TODO Add some more sort methods here
+    """Main copy method"""
+    if method == "Day" or method == "Month" or method == "Year":
+        ctime = time.ctime(os.path.getctime(filepath)).split()
+        # TODO This first block could probably be simplified using os.path.join() but idk
+        if method == "Day":
+            dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/" + ctime[2] + "/"
+        elif method == "Month":
+            dest = outpath + "/" + ctime[-1] + "/" + ctime[1] + "/"
+        elif method == "Year":
+            dest = outpath + "/" + ctime[-1] + "/"
+    elif method == "File extension":
+        dest = outpath + "/" + os.path.splitext(filepath)[1].replace('.','')
+
     if os.path.isdir(dest):
         #! Need to handle filenotfound exception
         shutil.copy2(filepath, dest)
@@ -101,7 +104,7 @@ def choosemethod():
     result = radiolist_dialog(
         title="filesort CLI",
         text="Sort method:\n[Press space to select]",
-        values=[("Day", "/YYYY/MM/DD/"), ("Month", "/YYYY/MM/"), ("Year", "/YYYY/")],
+        values=[("Day", "/YYYY/MM/DD/"), ("Month", "/YYYY/MM/"), ("Year", "/YYYY/"),("File extension","/xxx/")],
     ).run()
     return result
 
