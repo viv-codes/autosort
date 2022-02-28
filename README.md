@@ -14,6 +14,10 @@ Install filesort:
 ```
 pip install filesort
 ```
+Run filesort:
+```
+filesort
+```
 
 Example input directory prior to sorting:
 ```
