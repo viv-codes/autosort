@@ -12,8 +12,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/viv-codes/filesort",
-
-    #include_package_data=True,
+    # include_package_data=True,
     project_urls={
         "Bug Tracker": "https://github.com/viv-codes/filesort/issues",
     },
@@ -22,18 +21,18 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-
-    #package_dir={"": "src"},
-    py_modules=['main'],
+    # package_dir={"": "src"},
+    py_modules=["main"],
     packages=find_packages(where="main"),
-    install_requires=['Click',],
-        entry_points={
-        'console_scripts': [
-            'filesort=main:cli',
+    install_requires=[
+        "Click",
+    ],
+    entry_points={
+        "console_scripts": [
+            "filesort=main:cli",
         ],
-        },
-
-    #packages=find_packages(include=['prompt-toolkit', 'Click'])
-    #install_requires=['prompt-toolkit', 'Click']
+    },
+    # packages=find_packages(include=['prompt-toolkit', 'Click'])
+    # install_requires=['prompt-toolkit', 'Click']
     python_requires=">=3.6",
 )

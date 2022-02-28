@@ -62,7 +62,7 @@ def copy(filepath, outpath, method):
         elif method == "Year":
             dest = outpath + "/" + ctime[-1] + "/"
     elif method == "File extension":
-        dest = outpath + "/" + os.path.splitext(filepath)[1].replace('.','')
+        dest = outpath + "/" + os.path.splitext(filepath)[1].replace(".", "")
 
     if os.path.isdir(dest):
         #! Need to handle filenotfound exception
@@ -104,7 +104,12 @@ def choosemethod():
     result = radiolist_dialog(
         title="filesort CLI",
         text="Sort method:\n[Press space to select]",
-        values=[("Day", "/YYYY/MM/DD/"), ("Month", "/YYYY/MM/"), ("Year", "/YYYY/"),("File extension","/xxx/")],
+        values=[
+            ("Day", "/YYYY/MM/DD/"),
+            ("Month", "/YYYY/MM/"),
+            ("Year", "/YYYY/"),
+            ("File extension", "/xxx/"),
+        ],
     ).run()
     return result
 
