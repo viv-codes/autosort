@@ -21,7 +21,7 @@ def main():
     nameout = outname()
     if nameout == "":
         nameout = None
-    outpath = outstr + nameout
+    outpath = os.path.join(outstr , nameout)
     method = choosemethod()
     confirm(instr, outstr, nameout, method)
     # progressbar(instr)
@@ -57,16 +57,16 @@ def copy(filepath, outpath, method):
     elif method == "Year":
         dest = outpath + "/" + ctime[-1] + "/"
     # TODO Add some more sort methods here
-    if os.path.isdir():
+    if os.path.isdir(dest):
         #! Need to handle filenotfound exception
         shutil.copy2(filepath, dest)
     else:
-        os.mkdir(dest)
+        os.makedirs(dest)
         shutil.copy2(filepath, dest)
 
 
 def input():
-    """Queries the user for the input directory"""
+    """Queries the user for t/home/vivi/Documents/testing/outdirhe input directory"""
     instr = input_dialog(title="autosort CLI", text="Path of input:").run()
     if instr == "":
         input()
