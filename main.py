@@ -67,9 +67,9 @@ def copy(filepath, outpath, method):
     if method == "Day" or method == "Month" or method == "Year":
         ctime = time.ctime(os.path.getctime(filepath)).split()
         if method == "Day":
-            dest = os.path.join(outpath,ctime[-1],ctime[1],ctime[2])
+            dest = os.path.join(outpath, ctime[-1], ctime[1], ctime[2])
         elif method == "Month":
-            dest = os.path.join(outpath,ctime[-1],ctime[1])
+            dest = os.path.join(outpath, ctime[-1], ctime[1])
         elif method == "Year":
             dest = os.path.join(outpath, ctime[-1])
     elif method == "File extension":
