@@ -2,7 +2,11 @@
 
 ![Build](https://img.shields.io/github/workflow/status/viv-codes/autosort/Lint?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Made%20with-Python-yellow?style=for-the-badge)
+![pythonversion](https://img.shields.io/pypi/pyversions/filesort?style=for-the-badge)
 ![Black](https://img.shields.io/badge/Code%20Style-Black-black?style=for-the-badge)
+![License](https://img.shields.io/pypi/l/filesort?style=for-the-badge)
+![pypi](https://img.shields.io/pypi/v/filesort?style=for-the-badge)
+
 
 A utility that automatically organizes files based on metadata within the linux filesystem. Currently can sort by day, month, or year. Future functionality will include options to sort by file extension or only sort files that have a certain extension
 
