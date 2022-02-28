@@ -33,3 +33,8 @@ testfilesort/
             └── Screenshot from 2022-02-23 10-01-19.png
 
 ```
+
+An example of the UI:
+
+![Screenshot of input field](readme_assets/page0.png)
+![Screenshot of confirmation page](readme_assets/endstep.png)
