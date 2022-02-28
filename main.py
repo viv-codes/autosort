@@ -45,7 +45,7 @@ def traversedir(path, outpath, method):
         for filename in os.listdir(path):
             f = os.path.join(path, filename)
             if os.path.isdir(f):
-                traversedir(f)
+                traversedir(f, outpath, method)
             elif os.path.isfile(f):
                 copy(f, outpath, method)
 
@@ -63,13 +63,15 @@ def copy(filepath, outpath, method):
             dest = outpath + "/" + ctime[-1] + "/"
     elif method == "File extension":
         dest = outpath + "/" + os.path.splitext(filepath)[1].replace(".", "")
-
-    if os.path.isdir(dest):
-        #! Need to handle filenotfound exception
-        shutil.copy2(filepath, dest)
-    else:
-        os.makedirs(dest)
-        shutil.copy2(filepath, dest)
+    try:
+        if os.path.isdir(dest):
+            #! Need to handle filenotfound exception
+            shutil.copy2(filepath, dest)
+        else:
+            os.makedirs(dest)
+            shutil.copy2(filepath, dest)
+    except PermissionError:
+        pass
 
 
 def input():
