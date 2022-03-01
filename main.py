@@ -128,10 +128,10 @@ def traversedir(path, outpath, method, additional):
                 if os.path.isdir(f):
                     traversedir(f, outpath, method)
                 elif os.path.isfile(f):
-                    copy(f, outpath, method)
+                    copy(f, outpath, method, additional)
 
 
-def copy(filepath, outpath, method):
+def copy(filepath, outpath, method, additional):
     """Main copy method"""
     if method == "Day" or method == "Month" or method == "Year":
         ctime = time.ctime(os.path.getctime(filepath)).split()
@@ -146,11 +146,12 @@ def copy(filepath, outpath, method):
     try:
         if os.path.isdir(dest):
             shutil.copy2(filepath, dest)
-            # ! Verbose option goes here
+
         else:
             os.makedirs(dest)
             shutil.copy2(filepath, dest)
-            # ! Verbose option goes here
+        if "v" in additional:
+            click.echo("Copied" + filepath + " to " + dest)
     except PermissionError as p:
         # click.echo(p)
         click.echo(
