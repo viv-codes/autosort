@@ -15,7 +15,7 @@ import click
 from yaspin import yaspin
 
 
-TITLE = "filesort CLI v0.1.3"
+TITLE = "filesort CLI v0.1.4"
 
 
 @click.command()
@@ -83,7 +83,6 @@ def copy(filepath, outpath, method):
         dest = outpath + "/" + os.path.splitext(filepath)[1].replace(".", "")
     try:
         if os.path.isdir(dest):
-            #! Need to handle filenotfound exception
             shutil.copy2(filepath, dest)
         else:
             os.makedirs(dest)
