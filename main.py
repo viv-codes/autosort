@@ -21,9 +21,9 @@ TITLE = "filesort CLI v0.1.4"
 @click.command()
 def cli():
     """Primary entry point for GUI operations"""
-    additional=None
+    additional = None
 
-    #Takes input from the user and formats it
+    # Takes input from the user and formats it
     instr = input()
     verify(instr)
     outstr = output()
@@ -38,7 +38,7 @@ def cli():
     if method == None:
         exit()
 
-    #Asks the user to confirm their choice
+    # Asks the user to confirm their choice
     out = confirm(instr, outstr, nameout, method)
     if out == None:
         exit()
@@ -46,9 +46,9 @@ def cli():
         cli()
     elif out == 1:
         additional = adds()
+        # ! ROUTE THROUGH CONFIRM AGAIN
 
-
-    #Sort with no additional options specified
+    # Sort with no additional options specified
     else:
         # ! Add an option for copy vs move and to only copy files with a certain file extension
         sort(instr, outpath, method)
@@ -206,7 +206,7 @@ def adds():
         values=[
             ("v", "Verbose"),
             ("ext", "Specify an extension to copy"),
-            ("sym", "Ignore symlinks")
+            ("sym", "Ignore symlinks"),
         ],
     ).run()
     return result
@@ -227,7 +227,12 @@ def confirm(instr, outstr, nameout, method):
         + "\nMethod: "
         + method
         + "\nIs this information correct?",
-        buttons=[("Yes", True), ("No", False), ("Additional Options",1),("Cancel", None)],
+        buttons=[
+            ("Yes", True),
+            ("No", False),
+            ("Additional Options", 1),
+            ("Cancel", None),
+        ],
     ).run()
     return out
 
