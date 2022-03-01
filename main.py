@@ -88,8 +88,14 @@ def copy(filepath, outpath, method):
         else:
             os.makedirs(dest)
             shutil.copy2(filepath, dest)
-    except PermissionError:
-        pass
+    except PermissionError as p:
+        # click.echo(p)
+        click.echo(
+            "You do not have permission to access the following file: " + filepath
+        )
+    except NotADirectoryError as n:
+        # click.echo(n)
+        click.echo("Error copying " + filepath)
 
 
 def input():
