@@ -14,7 +14,7 @@ import time
 import click
 from yaspin import yaspin
 
-TITLE = "filesort CLI v0.1.1"
+TITLE = "filesort CLI v0.1.3"
 
 
 @click.command()
