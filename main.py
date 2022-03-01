@@ -6,6 +6,7 @@ from prompt_toolkit.shortcuts import (
     button_dialog,
     radiolist_dialog,
     ProgressBar,
+    checkboxlist_dialog,
 )
 import os
 import shutil
@@ -20,6 +21,9 @@ TITLE = "filesort CLI v0.1.4"
 @click.command()
 def cli():
     """Primary entry point for GUI operations"""
+    additional=None
+
+    #Takes input from the user and formats it
     instr = input()
     verify(instr)
     outstr = output()
@@ -33,11 +37,18 @@ def cli():
     method = choosemethod()
     if method == None:
         exit()
+
+    #Asks the user to confirm their choice
     out = confirm(instr, outstr, nameout, method)
     if out == None:
         exit()
     elif out == False:
         cli()
+    elif out == 1:
+        additional = adds()
+
+
+    #Sort with no additional options specified
     else:
         # ! Add an option for copy vs move and to only copy files with a certain file extension
         sort(instr, outpath, method)
@@ -187,6 +198,20 @@ def choosemethod():
     return result
 
 
+def adds():
+    """Gives the user a choice of additional options to execute"""
+    result = checkboxlist_dialog(
+        title=TITLE,
+        text="Additional options:\n[Press space to select]",
+        values=[
+            ("v", "Verbose"),
+            ("ext", "Specify an extension to copy"),
+            ("sym", "Ignore symlinks")
+        ],
+    ).run()
+    return result
+
+
 def confirm(instr, outstr, nameout, method):
     """Queries the user to confirm the validity of their data"""
     out = button_dialog(
@@ -202,7 +227,7 @@ def confirm(instr, outstr, nameout, method):
         + "\nMethod: "
         + method
         + "\nIs this information correct?",
-        buttons=[("Yes", True), ("No", False), ("Cancel", None)],
+        buttons=[("Yes", True), ("No", False), ("Additional Options",1),("Cancel", None)],
     ).run()
     return out
 
