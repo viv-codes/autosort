@@ -45,10 +45,11 @@ def cli():
         genericmessage("Sort complete!")
 
 
-@click.option('-v', '--version', 'version')
+@click.option("-v", "--version", "version")
 def version(TITLE):
     """Prints the version"""
     click.echo(TITLE)
+
 
 def sort(instr, outpath, method):
     """Sorts the input directory into the output directory via the defined sort method"""
