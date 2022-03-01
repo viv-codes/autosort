@@ -171,11 +171,5 @@ def genericmessage(astring):
     message_dialog(title=TITLE, text=astring + "\nPress ENTER to quit.").run()
 
 
-# def progressbar(instr):
-#     """Displays the progress of the copy"""
-# TODO make this like actually work
-# for root, dirs, files in os.walk(instr, topdown=False)
-
-
 if __name__ == "__main__":
     cli()
