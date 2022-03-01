@@ -49,7 +49,6 @@ def cli():
         # ! ROUTE THROUGH CONFIRM AGAIN
         sort(instr, outpath, method, additional)
 
-
     # Sort with no additional options specified
     else:
         # ! Add an option for copy vs move and to only copy files with a certain file extension
