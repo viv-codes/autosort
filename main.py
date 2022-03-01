@@ -14,6 +14,7 @@ import time
 import click
 from yaspin import yaspin
 
+
 TITLE = "filesort CLI v0.1.3"
 
 
@@ -43,6 +44,11 @@ def cli():
         sort(instr, outpath, method)
         genericmessage("Sort complete!")
 
+
+@click.option('-v', '--version', 'version')
+def version(TITLE):
+    """Prints the version"""
+    click.echo(TITLE)
 
 def sort(instr, outpath, method):
     """Sorts the input directory into the output directory via the defined sort method"""
