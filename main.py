@@ -47,6 +47,8 @@ def cli():
     elif out == 1:
         additional = adds()
         # ! ROUTE THROUGH CONFIRM AGAIN
+        sort(instr, outpath, method, additional)
+
 
     # Sort with no additional options specified
     else:
@@ -110,18 +112,20 @@ def termextension(extension):
         sort(instr, outpath, "File extension")
 
 
-def sort(instr, outpath, method):
+def sort(instr, outpath, method, additional):
     """Sorts the input directory into the output directory via the defined sort method"""
     os.mkdir(outpath)
-    traversedir(instr, outpath, method)
+    traversedir(instr, outpath, method, additional)
 
 
-def traversedir(path, outpath, method):
+def traversedir(path, outpath, method, additional):
     """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
     if os.path.isdir(path):
         with yaspin(text="Moving files..."):
             for filename in os.listdir(path):
                 f = os.path.join(path, filename)
+                # ! Check file extension here
+                # ! Check if symlink here
                 if os.path.isdir(f):
                     traversedir(f, outpath, method)
                 elif os.path.isfile(f):
@@ -143,9 +147,11 @@ def copy(filepath, outpath, method):
     try:
         if os.path.isdir(dest):
             shutil.copy2(filepath, dest)
+            # ! Verbose option goes here
         else:
             os.makedirs(dest)
             shutil.copy2(filepath, dest)
+            # ! Verbose option goes here
     except PermissionError as p:
         # click.echo(p)
         click.echo(
