@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from unicodedata import name
 from prompt_toolkit.shortcuts import (
     input_dialog,
     message_dialog,
@@ -45,10 +44,59 @@ def cli():
         genericmessage("Sort complete!")
 
 
+#! I should probably change this next line and permit verbose operation
 @click.option("-v", "--version", "version")
 def version(TITLE):
     """Prints the version"""
     click.echo(TITLE)
+
+
+@click.option("-d", "--day", "sort by day", type=(str, str))
+def termday(day):
+    instr, outpath = day
+    if instr == None or instr == "" or outpath == None or outpath == "":
+        click.echo(
+            "Please input the input string followed by a space, then your output path that contains a new destination folder"
+        )
+        exit()
+    else:
+        sort(instr, outpath, "Day")
+
+
+@click.option("-m", "--month", "sort by month", type=(str, str))
+def termmonth(month):
+    instr, outpath = month
+    if instr == None or instr == "" or outpath == None or outpath == "":
+        click.echo(
+            "Please input the input string followed by a space, then your output path that contains a new destination folder"
+        )
+        exit()
+    else:
+        sort(instr, outpath, "Month")
+
+
+@click.option("-y", "--year", "sort by year", type=(str, str))
+def termyear(year):
+    instr, outpath = year
+    if instr == None or instr == "" or outpath == None or outpath == "":
+        click.echo(
+            "Please input the input string followed by a space, then your output path that contains a new destination folder"
+        )
+        exit()
+    else:
+        sort(instr, outpath, "Year")
+
+
+@click.option("-e", "--extension", "sort by file extension", type=(str, str))
+def termextension(extension):
+    instr, outpath = extension
+    if instr == None or instr == "" or outpath == None or outpath == "":
+        click.echo(
+            "Please input the input string followed by a space, then your output path that contains a new destination folder"
+        )
+        exit()
+    else:
+        sort(instr, outpath, "File extension")
 
 
 def sort(instr, outpath, method):
