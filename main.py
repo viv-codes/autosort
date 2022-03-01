@@ -47,7 +47,11 @@ def cli():
     elif out == 1:
         additional = adds()
         # ! ROUTE THROUGH CONFIRM AGAIN
-        sort(instr, outpath, method, additional)
+        if "ext" in additional:
+            extension = promptextension()
+            sort(instr, outpath, method, additional, extension)
+        else:
+            sort(instr, outpath, method, additional)
 
     # Sort with no additional options specified
     else:
@@ -111,24 +115,37 @@ def termextension(extension):
         sort(instr, outpath, "File extension")
 
 
-def sort(instr, outpath, method, additional):
+def sort(instr, outpath, method, additional, extension):
     """Sorts the input directory into the output directory via the defined sort method"""
+    # TODO This can probably be removed for simplicity
     os.mkdir(outpath)
-    traversedir(instr, outpath, method, additional)
+    traversedir(instr, outpath, method, additional, extension)
 
 
-def traversedir(path, outpath, method, additional):
+def traversedir(path, outpath, method, additional, extension):
     """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
     if os.path.isdir(path):
         with yaspin(text="Moving files..."):
             for filename in os.listdir(path):
                 f = os.path.join(path, filename)
-                # ! Check file extension here
-                # ! Check if symlink here
-                if os.path.isdir(f):
-                    traversedir(f, outpath, method)
-                elif os.path.isfile(f):
-                    copy(f, outpath, method, additional)
+                if additional != None:
+                    if "ext" in additional and extension != None:
+                        if f.endswith(extension):
+                            if os.path.isdir(f):
+                                traversedir(f, outpath, method, extension)
+                            elif os.path.isfile(f):
+                                copy(f, outpath, method)
+                    elif "sym" in additional:
+                        if os.path.islink(f):
+                            if "v" in additional:
+                                print("Skipping symlink " + f)
+                            else:
+                                pass
+                else:
+                    if os.path.isdir(f):
+                        traversedir(f, outpath, method)
+                    elif os.path.isfile(f):
+                        copy(f, outpath, method)
 
 
 def copy(filepath, outpath, method, additional):
@@ -150,8 +167,9 @@ def copy(filepath, outpath, method, additional):
         else:
             os.makedirs(dest)
             shutil.copy2(filepath, dest)
-        if "v" in additional:
-            click.echo("Copied" + filepath + " to " + dest)
+        if additional != None:
+            if "v" in additional:
+                click.echo("Copied" + filepath + " to " + dest)
     except PermissionError as p:
         # click.echo(p)
         click.echo(
@@ -216,6 +234,15 @@ def adds():
         ],
     ).run()
     return result
+
+
+def promptextension():
+    """Queries the user for the file extension"""
+    name = input_dialog(title=TITLE, text="File extension:").run()
+    if name == "":
+        promptextension()
+    else:
+        return name
 
 
 def confirm(instr, outstr, nameout, method):
