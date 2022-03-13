@@ -137,12 +137,13 @@ def traversedir(path, outpath, method, additional, extension):
                     f = os.path.join(path, filename)
                     if additional != None:
                         if "ext" in additional and extension != None:
-                            if f.endswith(extension):
-                                if os.path.isdir(f):
-                                    traversedir(f, outpath, method, extension, additional, extension)
-                                elif os.path.isfile(f):
+                            if os.path.isdir(f):
+                                traversedir(f, outpath, method, extension, additional, extension)
+                            elif os.path.isfile(f):
+                                if f.endswith(extension):
                                     copy(f, outpath, method)
                         elif "sym" in additional:
+                            # ! I have no idea if this works or how it should work
                             if os.path.islink(f):
                                 if "v" in additional:
                                     print("Skipping symlink " + f)
