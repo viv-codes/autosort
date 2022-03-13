@@ -44,15 +44,18 @@ def cli():
         exit()
     elif out == False:
         cli()
-    elif out == 1 and out != True:
+    elif out == 3 and out != True:
         additional = adds()
         # ! ROUTE THROUGH CONFIRM AGAIN
         if "ext" in additional:
             extension = promptextension()
             sort(instr, outpath, method, additional, extension)
+            genericmessage("Sort complete!")
+
         else:
             extension = None
             sort(instr, outpath, method, additional, extension)
+            genericmessage("Sort complete!")
 
     # Sort with no additional options specified
     else:
@@ -128,27 +131,60 @@ def sort(instr, outpath, method, additional, extension):
 def traversedir(path, outpath, method, additional, extension):
     """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
     if os.path.isdir(path):
-        with yaspin(text="Moving files..."):
-            for filename in os.listdir(path):
-                f = os.path.join(path, filename)
-                if additional != None:
-                    if "ext" in additional and extension != None:
-                        if f.endswith(extension):
+        if "v" not in additional:
+            with yaspin(text="Moving files..."):
+                for filename in os.listdir(path):
+                    f = os.path.join(path, filename)
+                    if additional != None:
+                        if "ext" in additional and extension != None:
+                            if f.endswith(extension):
+                                if os.path.isdir(f):
+                                    traversedir(f, outpath, method, extension, additional, extension)
+                                elif os.path.isfile(f):
+                                    copy(f, outpath, method)
+                        elif "sym" in additional:
+                            if os.path.islink(f):
+                                if "v" in additional:
+                                    print("Skipping symlink " + f)
+                                else:
+                                    pass
+                        else:
                             if os.path.isdir(f):
-                                traversedir(f, outpath, method, extension, additional, extension)
+                                traversedir(f, outpath, method, additional, extension)
                             elif os.path.isfile(f):
-                                copy(f, outpath, method)
-                    elif "sym" in additional:
-                        if os.path.islink(f):
-                            if "v" in additional:
-                                print("Skipping symlink " + f)
-                            else:
-                                pass
-                else:
-                    if os.path.isdir(f):
-                        traversedir(f, outpath, method, additional, extension)
-                    elif os.path.isfile(f):
-                        copy(f, outpath, method, None)
+                                copy(f, outpath, method, additional)
+                    else:
+                        if os.path.isdir(f):
+                            traversedir(f, outpath, method, additional, extension)
+                        elif os.path.isfile(f):
+                            copy(f, outpath, method, additional)
+        
+        else:
+            for filename in os.listdir(path):
+                    f = os.path.join(path, filename)
+                    if additional != None:
+                        if "ext" in additional and extension != None:
+                            if f.endswith(extension):
+                                if os.path.isdir(f):
+                                    traversedir(f, outpath, method, extension, additional, extension)
+                                elif os.path.isfile(f):
+                                    copy(f, outpath, method)
+                        elif "sym" in additional:
+                            if os.path.islink(f):
+                                if "v" in additional:
+                                    print("Skipping symlink " + f)
+                                else:
+                                    pass
+                        else:
+                            if os.path.isdir(f):
+                                traversedir(f, outpath, method, additional, extension)
+                            elif os.path.isfile(f):
+                                copy(f, outpath, method, additional)
+                    else:
+                        if os.path.isdir(f):
+                            traversedir(f, outpath, method, additional, extension)
+                        elif os.path.isfile(f):
+                            copy(f, outpath, method, additional)
 
 
 def copy(filepath, outpath, method, additional):
@@ -266,7 +302,7 @@ def confirm(instr, outstr, nameout, method):
         buttons=[
             ("Yes", True),
             ("No", False),
-            ("Additional Options", 1),
+            ("Additional Options", 3),
             ("Cancel", None),
         ],
     ).run()
