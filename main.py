@@ -50,7 +50,7 @@ def cli():
         if "ext" in additional:
             extension = promptextension()
             sort(instr, outpath, method, additional, extension)
-            genericmessage("Sort complete!")
+            genericmessage("Sort complete!") 
 
         else:
             extension = None
