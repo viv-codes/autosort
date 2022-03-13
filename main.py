@@ -50,7 +50,7 @@ def cli():
         if "ext" in additional:
             extension = promptextension()
             sort(instr, outpath, method, additional, extension)
-            genericmessage("Sort complete!") 
+            genericmessage("Sort complete!")
 
         else:
             extension = None
@@ -138,7 +138,9 @@ def traversedir(path, outpath, method, additional, extension):
                     if additional != None:
                         if "ext" in additional and extension != None:
                             if os.path.isdir(f):
-                                traversedir(f, outpath, method, extension, additional, extension)
+                                traversedir(
+                                    f, outpath, method, extension, additional, extension
+                                )
                             elif os.path.isfile(f):
                                 if f.endswith(extension):
                                     copy(f, outpath, method)
@@ -159,33 +161,35 @@ def traversedir(path, outpath, method, additional, extension):
                             traversedir(f, outpath, method, additional, extension)
                         elif os.path.isfile(f):
                             copy(f, outpath, method, additional)
-        
+
         else:
             for filename in os.listdir(path):
-                    f = os.path.join(path, filename)
-                    if additional != None:
-                        if "ext" in additional and extension != None:
-                            if f.endswith(extension):
-                                if os.path.isdir(f):
-                                    traversedir(f, outpath, method, extension, additional, extension)
-                                elif os.path.isfile(f):
-                                    copy(f, outpath, method)
-                        elif "sym" in additional:
-                            if os.path.islink(f):
-                                if "v" in additional:
-                                    print("Skipping symlink " + f)
-                                else:
-                                    pass
-                        else:
+                f = os.path.join(path, filename)
+                if additional != None:
+                    if "ext" in additional and extension != None:
+                        if f.endswith(extension):
                             if os.path.isdir(f):
-                                traversedir(f, outpath, method, additional, extension)
+                                traversedir(
+                                    f, outpath, method, extension, additional, extension
+                                )
                             elif os.path.isfile(f):
-                                copy(f, outpath, method, additional)
+                                copy(f, outpath, method)
+                    elif "sym" in additional:
+                        if os.path.islink(f):
+                            if "v" in additional:
+                                print("Skipping symlink " + f)
+                            else:
+                                pass
                     else:
                         if os.path.isdir(f):
                             traversedir(f, outpath, method, additional, extension)
                         elif os.path.isfile(f):
                             copy(f, outpath, method, additional)
+                else:
+                    if os.path.isdir(f):
+                        traversedir(f, outpath, method, additional, extension)
+                    elif os.path.isfile(f):
+                        copy(f, outpath, method, additional)
 
 
 def copy(filepath, outpath, method, additional):
