@@ -44,19 +44,22 @@ def cli():
         exit()
     elif out == False:
         cli()
-    elif out == 1:
+    elif out == 1 and out != True:
         additional = adds()
         # ! ROUTE THROUGH CONFIRM AGAIN
         if "ext" in additional:
             extension = promptextension()
             sort(instr, outpath, method, additional, extension)
         else:
-            sort(instr, outpath, method, additional)
+            extension = None
+            sort(instr, outpath, method, additional, extension)
 
     # Sort with no additional options specified
     else:
         # ! Add an option for copy vs move and to only copy files with a certain file extension
-        sort(instr, outpath, method)
+        additional = None
+        extension = None
+        sort(instr, outpath, method, additional, extension)
         genericmessage("Sort complete!")
 
 
@@ -76,7 +79,7 @@ def termday(day):
         )
         exit()
     else:
-        sort(instr, outpath, "Day")
+        sort(instr, outpath, "Day", None, None)
 
 
 @click.option("-m", "--month", "sort by month", type=(str, str))
@@ -88,7 +91,7 @@ def termmonth(month):
         )
         exit()
     else:
-        sort(instr, outpath, "Month")
+        sort(instr, outpath, "Month", None, None)
 
 
 @click.option("-y", "--year", "sort by year", type=(str, str))
@@ -100,7 +103,7 @@ def termyear(year):
         )
         exit()
     else:
-        sort(instr, outpath, "Year")
+        sort(instr, outpath, "Year", None, None)
 
 
 @click.option("-e", "--extension", "sort by file extension", type=(str, str))
@@ -112,7 +115,7 @@ def termextension(extension):
         )
         exit()
     else:
-        sort(instr, outpath, "File extension")
+        sort(instr, outpath, "File extension", None, None)
 
 
 def sort(instr, outpath, method, additional, extension):
@@ -132,7 +135,7 @@ def traversedir(path, outpath, method, additional, extension):
                     if "ext" in additional and extension != None:
                         if f.endswith(extension):
                             if os.path.isdir(f):
-                                traversedir(f, outpath, method, extension)
+                                traversedir(f, outpath, method, extension, additional, extension)
                             elif os.path.isfile(f):
                                 copy(f, outpath, method)
                     elif "sym" in additional:
@@ -143,9 +146,9 @@ def traversedir(path, outpath, method, additional, extension):
                                 pass
                 else:
                     if os.path.isdir(f):
-                        traversedir(f, outpath, method)
+                        traversedir(f, outpath, method, additional, extension)
                     elif os.path.isfile(f):
-                        copy(f, outpath, method)
+                        copy(f, outpath, method, None)
 
 
 def copy(filepath, outpath, method, additional):
