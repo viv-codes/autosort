@@ -150,10 +150,10 @@ def traversedir(path, outpath, method, additional, extension):
                     # TODO Test only certain extensions
                     if additional is not None:
                         if "ext" in additional:
-                            if os.path.splitext(len(f) - 1) == extension:
+                            if os.path.splitext(f)[-1] == extension:
                                 copy(f, outpath, method, additional)
                             else:
-                                print("Skipping file with extension " + extension)
+                                print("Skipping file, extension " + os.path.splitext(f)[-1] + " is not " + extension)
                         else:
                             copy(f, outpath, method, additional)
                     else:
@@ -220,7 +220,7 @@ def outname():
     if name == "":
         outname()
     else:
-        return name
+        return name.strip()
 
 
 def choosemethod():
@@ -254,9 +254,12 @@ def adds():
 
 def promptextension():
     """Queries the user for the file extension"""
-    name = input_dialog(title=TITLE, text="File extension:").run()
+    name = input_dialog(title=TITLE, text="File extension: (ex. '.html' or '.jpg')").run()
     if name == "":
         promptextension()
+    elif name[0] != ".":
+        nameout = "." + name
+        return nameout
     else:
         return name
 
@@ -266,16 +269,16 @@ def confirm(instr, outstr, nameout, method):
     out = button_dialog(
         title=TITLE,
         text="Confirm:\nInput folder: "
-        + instr
-        + "\nOutput folder: "
-        + outstr
-        + "\nName of output folder: "
-        + instr
-        + "/"
-        + nameout
-        + "\nMethod: "
-        + method
-        + "\nIs this information correct?",
+             + instr
+             + "\nOutput folder: "
+             + outstr
+             + "\nName of output folder: "
+             + instr
+             + "/"
+             + nameout
+             + "\nMethod: "
+             + method
+             + "\nIs this information correct?",
         buttons=[
             ("Yes", True),
             ("No", False),
