@@ -20,53 +20,6 @@ TITLE = "filesort CLI v0.1.4"
 
 
 @click.command()
-def cli():
-    """Primary entry point for GUI operations"""
-    additional = None
-
-    # Takes input from the user and formats it
-    instr = input()
-    verify(instr)
-    outstr = output()
-    verify(outstr)
-    nameout = outname()
-    if nameout == None:
-        exit()
-    elif nameout == "":
-        nameout = None
-    outpath = os.path.join(outstr, nameout)
-    method = choosemethod()
-    if method == None:
-        exit()
-
-    # Asks the user to confirm their choice
-    out = confirm(instr, outstr, nameout, method)
-    if out == None:
-        exit()
-    elif out == False:
-        cli()
-    elif out == 3 and out != True:
-        additional = adds()
-        # ! ROUTE THROUGH CONFIRM AGAIN
-        if "ext" in additional:
-            extension = promptextension()
-            sort(instr, outpath, method, additional, extension)
-            genericmessage("Sort complete!")
-
-        else:
-            extension = None
-            sort(instr, outpath, method, additional, extension)
-            genericmessage("Sort complete!")
-
-    # Sort with no additional options specified
-    else:
-        # ! Add an option for copy vs move and to only copy files with a certain file extension
-        additional = None
-        extension = None
-        sort(instr, outpath, method, additional, extension)
-        genericmessage("Sort complete!")
-
-
 #! I should probably change this next line and permit verbose operation
 @click.option("-v", "--version", "version")
 def version(TITLE):
@@ -122,9 +75,56 @@ def termextension(extension):
         sort(instr, outpath, "File extension", None, None)
 
 
+def cli():
+    """Primary entry point for GUI operations"""
+    additional = None
+
+    # Takes input from the user and formats it
+    instr = input()
+    verify(instr)
+    outstr = output()
+    verify(outstr)
+    nameout = outname()
+    if nameout == None:
+        exit()
+    elif nameout == "":
+        nameout = None
+    outpath = os.path.join(outstr, nameout)
+    method = choosemethod()
+    if method == None:
+        exit()
+
+    # Asks the user to confirm their choice
+    out = confirm(instr, outstr, nameout, method)
+    if out == None:
+        exit()
+    elif out == False:
+        cli()
+    elif out == 3 and out != True:
+        additional = adds()
+        # ! ROUTE THROUGH CONFIRM AGAIN
+        if "ext" in additional:
+            extension = promptextension()
+            sort(instr, outpath, method, additional, extension)
+            genericmessage("Sort complete!")
+
+        else:
+            extension = None
+            sort(instr, outpath, method, additional, extension)
+            genericmessage("Sort complete!")
+
+    # Sort with no additional options specified
+    else:
+        # ! Add an option for copy vs move and to only copy files with a certain file extension
+        additional = None
+        extension = None
+        sort(instr, outpath, method, additional, extension)
+        genericmessage("Sort complete!")
+
+
 def sort(instr, outpath, method, additional, extension):
     """Sorts the input directory into the output directory via the defined sort method"""
-    # TODO This can probably be removed for simplicity
+    # TODO This can be removed for simplicity
     os.mkdir(outpath)
     traversedir(instr, outpath, method, additional, extension)
 
@@ -140,17 +140,21 @@ def traversedir(path, outpath, method, additional, extension):
                     traversedir(f, outpath, method, additional, extension)
                 elif os.path.isfile(f):
                     # TODO Test only certain extensions
-                    if "ext" in additional:
-                        if os.path.splitext(len(f)-1) == extension:
-                            copy(f, outpath, method, additional)
+                    if additional != None:
+                        if "ext" in additional:
+                            if os.path.splitext(len(f) - 1) == extension:
+                                copy(f, outpath, method, additional)
+                            else:
+                                print("Skipping file with extension " + extension)
                         else:
-                            print("Skipping file with extension "+extension)
+                            copy(f, outpath, method, additional)
                     else:
                         copy(f, outpath, method, additional)
                 # TODO Test symlink skipping
                 elif os.path.islink(f):
-                    if "sym" in additional:
-                        print("Skipping symlink "+f)
+                    if additional != None:
+                        if "sym" in additional:
+                            print("Skipping symlink " + f)
 
         # if additional != None:
         #     if "v" not in additional:
