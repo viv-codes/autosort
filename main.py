@@ -81,9 +81,9 @@ def cli():
 
     # Takes input from the user and formats it
     instr = input()
-    verify(instr)
+    verify(instr) # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
     outstr = output()
-    verify(outstr)
+    verify(outstr) # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
     nameout = outname()
     if nameout == None:
         exit()
