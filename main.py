@@ -7,7 +7,7 @@ from prompt_toolkit.shortcuts import (
     button_dialog,
     radiolist_dialog,
     ProgressBar,
-    # checkboxlist_dialog,
+    checkboxlist_dialog,
 )
 import os
 import shutil
@@ -15,12 +15,11 @@ import time
 import click
 from yaspin import yaspin
 
-
 TITLE = "filesort CLI v0.1.4"
 
 
 @click.command()
-#! I should probably change this next line and permit verbose operation
+# ! I should probably change this next line and permit verbose operation
 @click.option("-v", "--version", "version")
 def version(TITLE):
     """Prints the version"""
@@ -42,7 +41,7 @@ def termday(day):
 @click.option("-m", "--month", "sort by month", type=(str, str))
 def termmonth(month):
     instr, outpath = month
-    if instr == None or instr == "" or outpath == None or outpath == "":
+    if instr is None or instr == "" or outpath is None or outpath == "":
         click.echo(
             "Please input the input string followed by a space, then your output path that contains a new destination folder"
         )
@@ -54,7 +53,7 @@ def termmonth(month):
 @click.option("-y", "--year", "sort by year", type=(str, str))
 def termyear(year):
     instr, outpath = year
-    if instr == None or instr == "" or outpath == None or outpath == "":
+    if instr is None or instr == "" or outpath is None or outpath == "":
         click.echo(
             "Please input the input string followed by a space, then your output path that contains a new destination folder"
         )
@@ -66,7 +65,7 @@ def termyear(year):
 @click.option("-e", "--extension", "sort by file extension", type=(str, str))
 def termextension(extension):
     instr, outpath = extension
-    if instr == None or instr == "" or outpath == None or outpath == "":
+    if instr is None or instr == "" or outpath is None or outpath == "":
         click.echo(
             "Please input the input string followed by a space, then your output path that contains a new destination folder"
         )
@@ -81,26 +80,30 @@ def cli():
 
     # Takes input from the user and formats it
     instr = input()
-    verify(instr) # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
+    verify(
+        instr
+    )  # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
     outstr = output()
-    verify(outstr) # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
+    verify(
+        outstr
+    )  # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
     nameout = outname()
-    if nameout == None:
+    if nameout is None:
         exit()
     elif nameout == "":
         nameout = None
     outpath = os.path.join(outstr, nameout)
     method = choosemethod()
-    if method == None:
+    if method is None:
         exit()
 
     # Asks the user to confirm their choice
     out = confirm(instr, outstr, nameout, method)
-    if out == None:
+    if out is None:
         exit()
-    elif out == False:
+    elif not out:
         cli()
-    elif out == 3 and out != True:
+    elif out == 3 and out is not True:
         additional = adds()
         # ! ROUTE THROUGH CONFIRM AGAIN
         if "ext" in additional:
@@ -130,7 +133,8 @@ def sort(instr, outpath, method, additional, extension):
 
 
 def traversedir(path, outpath, method, additional, extension):
-    """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
+    """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out
+    paths and copying."""
 
     if os.path.isdir(path):
         with yaspin(text="Moving files..."):
@@ -138,9 +142,13 @@ def traversedir(path, outpath, method, additional, extension):
                 f = os.path.join(path, filename)
                 if os.path.isdir(f):
                     traversedir(f, outpath, method, additional, extension)
+                elif os.path.islink(f):
+                    if additional is not None:
+                        if "sym" in additional:
+                            print("Skipping symlink " + f)
                 elif os.path.isfile(f):
                     # TODO Test only certain extensions
-                    if additional != None:
+                    if additional is not None:
                         if "ext" in additional:
                             if os.path.splitext(len(f) - 1) == extension:
                                 copy(f, outpath, method, additional)
@@ -150,72 +158,6 @@ def traversedir(path, outpath, method, additional, extension):
                             copy(f, outpath, method, additional)
                     else:
                         copy(f, outpath, method, additional)
-                # TODO Test symlink skipping
-                elif os.path.islink(f):
-                    if additional != None:
-                        if "sym" in additional:
-                            print("Skipping symlink " + f)
-
-        # if additional != None:
-        #     if "v" not in additional:
-        #         with yaspin(text="Moving files..."):
-        #             for filename in os.listdir(path):
-        #                 f = os.path.join(path, filename)
-        #                 if additional != None:
-        #                     if "ext" in additional and extension != None:
-        #                         if os.path.isdir(f):
-        #                             traversedir(
-        #                                 f, outpath, method, extension, additional, extension
-        #                             )
-        #                         elif os.path.isfile(f):
-        #                             if f.endswith(extension):
-        #                                 copy(f, outpath, method)
-        #                     elif "sym" in additional:
-        #                         # ! I have no idea if this works or how it should work
-        #                         if os.path.islink(f):
-        #                             if "v" in additional:
-        #                                 print("Skipping symlink " + f)
-        #                             else:
-        #                                 pass
-        #                     else:
-        #                         if os.path.isdir(f):
-        #                             traversedir(f, outpath, method, additional, extension)
-        #                         elif os.path.isfile(f):
-        #                             copy(f, outpath, method, additional)
-        #                 else:
-        #                     if os.path.isdir(f):
-        #                         traversedir(f, outpath, method, additional, extension)
-        #                     elif os.path.isfile(f):
-        #                         copy(f, outpath, method, additional)
-        #
-        # else:
-        #     for filename in os.listdir(path):
-        #         f = os.path.join(path, filename)
-        #         if additional != None:
-        #             if "ext" in additional and extension != None:
-        #                 if f.endswith(extension):
-        #                     if os.path.isdir(f):
-        #                         traversedir(
-        #                             f, outpath, method, extension, additional, extension
-        #                         )
-        #                     elif os.path.isfile(f):
-        #                         copy(f, outpath, method)
-        #             elif "sym" in additional:
-        #                 if os.path.islink(f):
-        #                     if "v" in additional:
-        #                         print("Skipping symlink " + f)
-        #                     else:
-        #                         pass
-        #             else:
-        #                 if os.path.isdir(f):
-        #                     traversedir(f, outpath, method, additional, extension)
-        #                 elif os.path.isfile(f):
-        #                     copy(f, outpath, method, additional)
-        #         else:
-        #             if os.path.isdir(f):
-        #                 traversedir(f, outpath, method, additional, extension)
-        #             elif os.path.isfile(f):
-        #                 copy(f, outpath, method, additional)
 
 
 def copy(filepath, outpath, method, additional):
@@ -240,8 +182,7 @@ def copy(filepath, outpath, method, additional):
             os.makedirs(dest)
             shutil.copy2(filepath, dest)
 
-        # TODO Test verbose status
-        if additional != None:
+        if additional is not None:
             if "v" in additional:
                 click.echo("Copied" + filepath + " to " + dest)
 
@@ -347,7 +288,7 @@ def confirm(instr, outstr, nameout, method):
 
 def verify(checkstr):
     """Exits the program if the string is none"""
-    if checkstr == None:
+    if checkstr is None:
         exit()
 
 
