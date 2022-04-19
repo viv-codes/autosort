@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
+
 from prompt_toolkit.shortcuts import (
     input_dialog,
     message_dialog,
     button_dialog,
     radiolist_dialog,
     ProgressBar,
-    checkboxlist_dialog,
+    # checkboxlist_dialog,
 )
 import os
 import shutil
@@ -130,66 +131,87 @@ def sort(instr, outpath, method, additional, extension):
 
 def traversedir(path, outpath, method, additional, extension):
     """Traverses the input directory recursively until it finds a file. Then calls separate methods for in and out paths and copying."""
-    if os.path.isdir(path):
-        if "v" not in additional:
-            with yaspin(text="Moving files..."):
-                for filename in os.listdir(path):
-                    f = os.path.join(path, filename)
-                    if additional != None:
-                        if "ext" in additional and extension != None:
-                            if os.path.isdir(f):
-                                traversedir(
-                                    f, outpath, method, extension, additional, extension
-                                )
-                            elif os.path.isfile(f):
-                                if f.endswith(extension):
-                                    copy(f, outpath, method)
-                        elif "sym" in additional:
-                            # ! I have no idea if this works or how it should work
-                            if os.path.islink(f):
-                                if "v" in additional:
-                                    print("Skipping symlink " + f)
-                                else:
-                                    pass
-                        else:
-                            if os.path.isdir(f):
-                                traversedir(f, outpath, method, additional, extension)
-                            elif os.path.isfile(f):
-                                copy(f, outpath, method, additional)
-                    else:
-                        if os.path.isdir(f):
-                            traversedir(f, outpath, method, additional, extension)
-                        elif os.path.isfile(f):
-                            copy(f, outpath, method, additional)
 
-        else:
+    if os.path.isdir(path):
+        with yaspin(text="Moving files..."):
             for filename in os.listdir(path):
                 f = os.path.join(path, filename)
-                if additional != None:
-                    if "ext" in additional and extension != None:
-                        if f.endswith(extension):
-                            if os.path.isdir(f):
-                                traversedir(
-                                    f, outpath, method, extension, additional, extension
-                                )
-                            elif os.path.isfile(f):
-                                copy(f, outpath, method)
-                    elif "sym" in additional:
-                        if os.path.islink(f):
-                            if "v" in additional:
-                                print("Skipping symlink " + f)
-                            else:
-                                pass
-                    else:
-                        if os.path.isdir(f):
-                            traversedir(f, outpath, method, additional, extension)
-                        elif os.path.isfile(f):
+                if os.path.isdir(f):
+                    traversedir(f, outpath, method, additional, extension)
+                elif os.path.isfile(f):
+                    # TODO Test only certain extensions
+                    if "ext" in additional:
+                        if os.path.splitext(len(f)-1) == extension:
                             copy(f, outpath, method, additional)
-                else:
-                    if os.path.isdir(f):
-                        traversedir(f, outpath, method, additional, extension)
-                    elif os.path.isfile(f):
+                        else:
+                            print("Skipping file with extension "+extension)
+                    else:
                         copy(f, outpath, method, additional)
+                # TODO Test symlink skipping
+                elif os.path.islink(f):
+                    if "sym" in additional:
+                        print("Skipping symlink "+f)
+
+        # if additional != None:
+        #     if "v" not in additional:
+        #         with yaspin(text="Moving files..."):
+        #             for filename in os.listdir(path):
+        #                 f = os.path.join(path, filename)
+        #                 if additional != None:
+        #                     if "ext" in additional and extension != None:
+        #                         if os.path.isdir(f):
+        #                             traversedir(
+        #                                 f, outpath, method, extension, additional, extension
+        #                             )
+        #                         elif os.path.isfile(f):
+        #                             if f.endswith(extension):
+        #                                 copy(f, outpath, method)
+        #                     elif "sym" in additional:
+        #                         # ! I have no idea if this works or how it should work
+        #                         if os.path.islink(f):
+        #                             if "v" in additional:
+        #                                 print("Skipping symlink " + f)
+        #                             else:
+        #                                 pass
+        #                     else:
+        #                         if os.path.isdir(f):
+        #                             traversedir(f, outpath, method, additional, extension)
+        #                         elif os.path.isfile(f):
+        #                             copy(f, outpath, method, additional)
+        #                 else:
+        #                     if os.path.isdir(f):
+        #                         traversedir(f, outpath, method, additional, extension)
+        #                     elif os.path.isfile(f):
+        #                         copy(f, outpath, method, additional)
+        #
+        # else:
+        #     for filename in os.listdir(path):
+        #         f = os.path.join(path, filename)
+        #         if additional != None:
+        #             if "ext" in additional and extension != None:
+        #                 if f.endswith(extension):
+        #                     if os.path.isdir(f):
+        #                         traversedir(
+        #                             f, outpath, method, extension, additional, extension
+        #                         )
+        #                     elif os.path.isfile(f):
+        #                         copy(f, outpath, method)
+        #             elif "sym" in additional:
+        #                 if os.path.islink(f):
+        #                     if "v" in additional:
+        #                         print("Skipping symlink " + f)
+        #                     else:
+        #                         pass
+        #             else:
+        #                 if os.path.isdir(f):
+        #                     traversedir(f, outpath, method, additional, extension)
+        #                 elif os.path.isfile(f):
+        #                     copy(f, outpath, method, additional)
+        #         else:
+        #             if os.path.isdir(f):
+        #                 traversedir(f, outpath, method, additional, extension)
+        #             elif os.path.isfile(f):
+        #                 copy(f, outpath, method, additional)
 
 
 def copy(filepath, outpath, method, additional):
@@ -204,6 +226,8 @@ def copy(filepath, outpath, method, additional):
             dest = os.path.join(outpath, ctime[-1])
     elif method == "File extension":
         dest = outpath + "/" + os.path.splitext(filepath)[1].replace(".", "")
+
+    #     The copying occurs here
     try:
         if os.path.isdir(dest):
             shutil.copy2(filepath, dest)
@@ -211,15 +235,18 @@ def copy(filepath, outpath, method, additional):
         else:
             os.makedirs(dest)
             shutil.copy2(filepath, dest)
+
+        # TODO Test verbose status
         if additional != None:
             if "v" in additional:
                 click.echo("Copied" + filepath + " to " + dest)
-    except PermissionError as p:
+
+    except PermissionError:
         # click.echo(p)
         click.echo(
             "You do not have permission to access the following file: " + filepath
         )
-    except NotADirectoryError as n:
+    except NotADirectoryError:
         # click.echo(n)
         click.echo("Error copying " + filepath)
 
