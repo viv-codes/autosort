@@ -20,9 +20,6 @@ TITLE = "filesort CLI v0.1.4"
 
 @click.command()
 @click.option(
-    "-v", "--version", help="Prints version of filesort"
-)  # TODO Change this to verbose??
-@click.option(
     "-m",
     "--method",
     prompt="Sort method:",
@@ -34,9 +31,11 @@ TITLE = "filesort CLI v0.1.4"
 @click.option("-v", "--verbose", help="Verbose operation")  # TODO Make this work
 @click.option("-e", "--extension", help="Only copy files with a specific extension")
 @click.option("-s", "--ignoresym", help="Ignore symlinks")
-def cli(indir, outdir, name, verbose, extension, ignoresym):
+def cli(indir, outdir, name, method, verbose, extension, ignoresym):
     """Primary entry point for GUI operations"""
     additional = None  # TODO I might have to change this for CLI
+    if verbose == 1:
+        additional=["v"]
 
     # Takes input from the user and formats it
     # TODO Need to put error handling here
@@ -59,41 +58,44 @@ def cli(indir, outdir, name, verbose, extension, ignoresym):
     else:
         nameout = outname()
 
+    if method is None:
+        method = choosemethod()
+
     # if nameout is None:
     #     exit()
     # elif nameout == "":
     #     nameout = None
     outpath = os.path.join(outstr, nameout)
-    method = choosemethod()
-    if method is None:
-        exit()
+    # if
+    # if method is None:
+    #     exit()
 
     # Asks the user to confirm their choice
-    out = confirm(instr, outstr, nameout, method)
-    if out is None:
-        exit()
-    elif not out:
-        cli()
-    elif out == 3 and out is not True:
-        additional = adds()
-        # ! ROUTE THROUGH CONFIRM AGAIN
-        if "ext" in additional:
-            extension = promptextension()
-            sort(instr, outpath, method, additional, extension)
-            genericmessage("Sort complete!")
-
-        else:
-            extension = None
-            sort(instr, outpath, method, additional, extension)
-            genericmessage("Sort complete!")
+    # out = confirm(instr, outstr, nameout, method)
+    # if out is None:
+    #     exit()
+    # elif not out:
+    #     cli()
+    # elif out == 3 and out is not True:
+    #     additional = adds()
+    #     # ! ROUTE THROUGH CONFIRM AGAIN
+    #     if "ext" in additional:
+    #         extension = promptextension()
+    #         sort(instr, outpath, method, additional, extension)
+    #         genericmessage("Sort complete!")
+    #
+    #     else:
+    #         extension = None
+    #         sort(instr, outpath, method, additional, extension)
+    #         genericmessage("Sort complete!")
 
     # Sort with no additional options specified
-    else:
+    # else:
         # ! Add an option for copy vs move and to only copy files with a certain file extension
-        additional = None
-        extension = None
-        sort(instr, outpath, method, additional, extension)
-        genericmessage("Sort complete!")
+    additional = None
+    extension = None
+    sort(instr, outpath, method, additional, extension)
+    genericmessage("Sort complete!")
 
 
 def sort(instr, outpath, method, additional, extension):
