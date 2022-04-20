@@ -246,16 +246,16 @@ def confirm(instr, outstr, nameout, method):
     out = button_dialog(
         title=TITLE,
         text="Confirm:\nInput folder: "
-             + instr
-             + "\nOutput folder: "
-             + outstr
-             + "\nName of output folder: "
-             + instr
-             + "/"
-             + nameout
-             + "\nMethod: "
-             + method
-             + "\nIs this information correct?",
+        + instr
+        + "\nOutput folder: "
+        + outstr
+        + "\nName of output folder: "
+        + instr
+        + "/"
+        + nameout
+        + "\nMethod: "
+        + method
+        + "\nIs this information correct?",
         buttons=[
             ("Yes", True),
             ("No", False),
