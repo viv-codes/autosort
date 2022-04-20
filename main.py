@@ -19,64 +19,73 @@ TITLE = "filesort CLI v0.1.4"
 
 
 @click.command()
-# ! I should probably change this next line and permit verbose operation
-@click.option("-v", "--version", "version")
-def version(TITLE):
-    """Prints the version"""
-    click.echo(TITLE)
+@click.option(
+    "-v", "--version", help="Prints version of filesort"
+)  # TODO Change this to verbose??
+@click.option(
+    "-m",
+    "--method",
+    prompt="Sort method:",
+    help="Sort method to be used. (Options: YYYY/MM/DD, YYYY/MM, YYYY, File extension)",
+)
+@click.option("-i", "--input", prompt="Input path: ", help="Input folder path")
+@click.option("-o", "--output", prompt="Output path: ", help="Output folder path")
+@click.option("-n", "--name", prompt="Output folder name: ", help="Output folder name")
+# def version(TITLE):
+#     """Prints the version"""
+#     click.echo(TITLE)
 
 
-@click.option("-d", "--day", "sort by day", type=(str, str))
-def termday(day):
-    instr, outpath = day
-    if instr == None or instr == "" or outpath == None or outpath == "":
-        click.echo(
-            "Please input the input string followed by a space, then your output path that contains a new destination folder"
-        )
-        exit()
-    else:
-        sort(instr, outpath, "Day", None, None)
+# def termday(day):
+#     instr, outpath = day
+#     if instr == None or instr == "" or outpath == None or outpath == "":
+#         click.echo(
+#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
+#         )
+#         exit()
+#     else:
+#         sort(instr, outpath, "Day", None, None)
 
 
-@click.option("-m", "--month", "sort by month", type=(str, str))
-def termmonth(month):
-    instr, outpath = month
-    if instr is None or instr == "" or outpath is None or outpath == "":
-        click.echo(
-            "Please input the input string followed by a space, then your output path that contains a new destination folder"
-        )
-        exit()
-    else:
-        sort(instr, outpath, "Month", None, None)
+# @click.option("-m", "--month", "sort by month", type=(str, str))
+# def termmonth(month):
+#     instr, outpath = month
+#     if instr is None or instr == "" or outpath is None or outpath == "":
+#         click.echo(
+#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
+#         )
+#         exit()
+#     else:
+#         sort(instr, outpath, "Month", None, None)
 
 
-@click.option("-y", "--year", "sort by year", type=(str, str))
-def termyear(year):
-    instr, outpath = year
-    if instr is None or instr == "" or outpath is None or outpath == "":
-        click.echo(
-            "Please input the input string followed by a space, then your output path that contains a new destination folder"
-        )
-        exit()
-    else:
-        sort(instr, outpath, "Year", None, None)
+# @click.option("-y", "--year", "sort by year", type=(str, str))
+# def termyear(year):
+#     instr, outpath = year
+#     if instr is None or instr == "" or outpath is None or outpath == "":
+#         click.echo(
+#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
+#         )
+#         exit()
+#     else:
+#         sort(instr, outpath, "Year", None, None)
 
 
-@click.option("-e", "--extension", "sort by file extension", type=(str, str))
-def termextension(extension):
-    instr, outpath = extension
-    if instr is None or instr == "" or outpath is None or outpath == "":
-        click.echo(
-            "Please input the input string followed by a space, then your output path that contains a new destination folder"
-        )
-        exit()
-    else:
-        sort(instr, outpath, "File extension", None, None)
+# @click.option("-e", "--extension", "sort by file extension", type=(str, str))
+# def termextension(extension):
+#     instr, outpath = extension
+#     if instr is None or instr == "" or outpath is None or outpath == "":
+#         click.echo(
+#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
+#         )
+#         exit()
+#     else:
+#         sort(instr, outpath, "File extension", None, None)
 
 
 def cli():
     """Primary entry point for GUI operations"""
-    additional = None
+    additional = None  # TODO I might have to change this for CLI
 
     # Takes input from the user and formats it
     instr = input()
@@ -147,7 +156,6 @@ def traversedir(path, outpath, method, additional, extension):
                         if "sym" in additional:
                             print("Skipping symlink " + f)
                 elif os.path.isfile(f):
-                    # TODO Test only certain extensions
                     if additional is not None:
                         if "ext" in additional:
                             if os.path.splitext(f)[-1] == extension:
