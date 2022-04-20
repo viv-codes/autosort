@@ -28,79 +28,41 @@ TITLE = "filesort CLI v0.1.4"
     prompt="Sort method:",
     help="Sort method to be used. (Options: YYYY/MM/DD, YYYY/MM, YYYY, File extension)",
 )
-@click.option("-i", "--input", prompt="Input path: ", help="Input folder path")
-@click.option("-o", "--output", prompt="Output path: ", help="Output folder path")
+@click.option("-i", "--indir", prompt="Input path", help="Input folder path")
+@click.option("-o", "--outdir", prompt="Output path", help="Output folder path")
 @click.option("-n", "--name", prompt="Output folder name: ", help="Output folder name")
-# def version(TITLE):
-#     """Prints the version"""
-#     click.echo(TITLE)
-
-
-# def termday(day):
-#     instr, outpath = day
-#     if instr == None or instr == "" or outpath == None or outpath == "":
-#         click.echo(
-#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
-#         )
-#         exit()
-#     else:
-#         sort(instr, outpath, "Day", None, None)
-
-
-# @click.option("-m", "--month", "sort by month", type=(str, str))
-# def termmonth(month):
-#     instr, outpath = month
-#     if instr is None or instr == "" or outpath is None or outpath == "":
-#         click.echo(
-#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
-#         )
-#         exit()
-#     else:
-#         sort(instr, outpath, "Month", None, None)
-
-
-# @click.option("-y", "--year", "sort by year", type=(str, str))
-# def termyear(year):
-#     instr, outpath = year
-#     if instr is None or instr == "" or outpath is None or outpath == "":
-#         click.echo(
-#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
-#         )
-#         exit()
-#     else:
-#         sort(instr, outpath, "Year", None, None)
-
-
-# @click.option("-e", "--extension", "sort by file extension", type=(str, str))
-# def termextension(extension):
-#     instr, outpath = extension
-#     if instr is None or instr == "" or outpath is None or outpath == "":
-#         click.echo(
-#             "Please input the input string followed by a space, then your output path that contains a new destination folder"
-#         )
-#         exit()
-#     else:
-#         sort(instr, outpath, "File extension", None, None)
-
-
-def cli():
+@click.option("-v", "--verbose", help="Verbose operation")  # TODO Make this work
+@click.option("-e", "--extension", help="Only copy files with a specific extension")
+@click.option("-s", "--ignoresym", help="Ignore symlinks")
+def cli(indir, outdir, name, verbose, extension, ignoresym):
     """Primary entry point for GUI operations"""
     additional = None  # TODO I might have to change this for CLI
 
     # Takes input from the user and formats it
-    instr = input()
-    verify(
-        instr
-    )  # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
-    outstr = output()
-    verify(
-        outstr
-    )  # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
-    nameout = outname()
-    if nameout is None:
-        exit()
-    elif nameout == "":
-        nameout = None
+    # TODO Need to put error handling here
+    if indir is not None:
+        instr = indir
+    else:
+        instr = input()
+        verify(
+            instr
+        )  # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
+    if outdir is not None:
+        outstr = outdir
+    else:
+        outstr = output()
+        verify(
+            outstr
+        )  # TODO It would be kinda quirky of me if I actually checked if this existed instead of just catching errors later
+    if name is not None:
+        nameout = name
+    else:
+        nameout = outname()
+
+    # if nameout is None:
+    #     exit()
+    # elif nameout == "":
+    #     nameout = None
     outpath = os.path.join(outstr, nameout)
     method = choosemethod()
     if method is None:
@@ -284,16 +246,16 @@ def confirm(instr, outstr, nameout, method):
     out = button_dialog(
         title=TITLE,
         text="Confirm:\nInput folder: "
-        + instr
-        + "\nOutput folder: "
-        + outstr
-        + "\nName of output folder: "
-        + instr
-        + "/"
-        + nameout
-        + "\nMethod: "
-        + method
-        + "\nIs this information correct?",
+             + instr
+             + "\nOutput folder: "
+             + outstr
+             + "\nName of output folder: "
+             + instr
+             + "/"
+             + nameout
+             + "\nMethod: "
+             + method
+             + "\nIs this information correct?",
         buttons=[
             ("Yes", True),
             ("No", False),
