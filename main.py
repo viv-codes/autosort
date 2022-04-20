@@ -35,7 +35,7 @@ def cli(indir, outdir, name, method, verbose, extension, ignoresym):
     """Primary entry point for GUI operations"""
     additional = None  # TODO I might have to change this for CLI
     if verbose == 1:
-        additional=["v"]
+        additional = ["v"]
 
     # Takes input from the user and formats it
     # TODO Need to put error handling here
@@ -91,7 +91,7 @@ def cli(indir, outdir, name, method, verbose, extension, ignoresym):
 
     # Sort with no additional options specified
     # else:
-        # ! Add an option for copy vs move and to only copy files with a certain file extension
+    # ! Add an option for copy vs move and to only copy files with a certain file extension
     additional = None
     extension = None
     sort(instr, outpath, method, additional, extension)
